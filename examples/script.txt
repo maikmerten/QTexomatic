@@ -1,0 +1,85 @@
+# This is a comment.
+
+# Textures are referred to with symbolic names.
+# Special symbolic names: base (the "main"-texture), glow (for fullbright pixels)
+
+# load <DEST> <FILENAME>
+# load base texture ("main"-texture)
+load base input/concrete.png
+
+# load other textures
+load bricks input/bricks.png
+load graff input/graffiti.png
+load grid input/grid.png
+load light input/light.png
+
+# tile bricks texture a few times
+# tile <DEST> <SRC> <XREPEAT> <YREPEAT>
+tile brickstiled bricks 2 2
+
+# scale brightness of SRC1 with brightness of SRC2 - emboss tiles onto concrete
+# scaleluma <DEST> <SRC1> <SRC2>
+scaleluma base base grid
+
+
+# The "set" command can be used set variables. The "offset"-variable determines
+# an offset between first and second texture for operations involving two
+# textures.
+# set <OPTNAME> <Values...>
+set offset 0 32
+
+# "combine" two textures (layer second texture on top of first one). If the
+# second texture has an alpha channel, then this will blend the textures.
+# combine <DEST> <SRC1> <SRC2>
+combine base base brickstiled
+
+
+# "scale" resamples a texture to provided dimensions. In this case, the graffity
+# texture is scaled down a bit.
+# scale <DEST> <SRC> <XPIXELS> <YPIXELS>
+scale graffscaled graff 112 48
+
+set offset 8 40
+combine base base graffscaled
+# reset offset
+set offset 0 0
+
+# create a new texture, fill with start color (hexadezimal notation). In this
+# case, a new luma texture is created and filled with the color black.
+# new <DEST> <XPIXELS> <YPIXELS> <HEXCOLOR-ARGB>
+new glow 128 128 0x000000
+
+scale light light 32 14
+set offset 48 96
+combine glow glow light
+set offset 0 0
+
+# "replacecolor" replaces a specified color with another specified color.
+# "replaceothercolors" replaces all colors that are NOT the specified color
+# with the second specified color.
+# replacecolor <HEXCOLOR-ARGB> <HEXCOLOR-ARGB>
+# replaceothercolors <HEXCOLOR-ARGB> <HEXCOLOR-ARGB>
+
+# Create a mask from the glow texture - replace anything that is not black
+# with white. All pixels contributing a glow value thus are turned white.
+replaceothercolors glowmask glow 0x000000 0xFFFFFF
+
+# With "sub" the RGB values from the second specified texture are subtracted
+# from the RGB texture values of the first specified texture. In this case,
+# turn all pixels where the glow texture contributes a lit pixel to black
+# by subtracting the glow-mask generated above.
+# sub <DEST> <SRC1> <SRC2>
+sub base base glowmask
+
+# The "save" command writes the "base" texture (and "glow", if present) into
+# output files, thus saving the result.
+# save <NAME> <FORMAT>
+
+# save to PNG with the name "output"
+save output tga
+
+# save to Quake WAD file with the name "output". Color conversion to the
+# Quake palette is done automatically.
+save output wad
+
+save output pak
