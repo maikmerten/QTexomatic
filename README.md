@@ -13,16 +13,35 @@ The support for Quake texture formats is provided by [QuakeTextureTool](https://
 
 QTexomatic operates by executing a provided script. Basic operations are to load, manipulate and save textures.
 
-Textures loaded in QTexomatic are referred to by symbolic names.Symbolic names can be chosen arbitrarily, but following symbolic names have special meaning when saving output:
+Textures loaded in QTexomatic are referred to by symbolic names. Symbolic names can be chosen arbitrarily, but following symbolic names have special meaning when saving output:
 
 * base: The "main"-part of the texture.
 * glow: Parts of the texture that shall glow in the dark (Quake-speak: "fullbright"). These glowing pixels need special treatment.
 
-An example-script is included in the `examples`-directory.
-
 ### Invoking QTexomatic
 
 `java -jar QTexomatic-<VERSION>.jar /path/to/script.txt`
+
+
+## Simple conversion of textures to Quake
+
+One use-case of QTexomatic is to automatically convert textures into Quake-compatible formats. Albeit QTexomatic supports a number of operations to combine several textures into new variations, the most basic use-case of doing texture-conversion is simple, as following example-script demonstrates:
+
+```
+# This is a comment.
+
+load base /path/to/grass.png
+save grass1 pak
+save grass1 wad
+
+load base /path/to/wood.jpg
+save wood1 pak
+save wood1 wad
+```
+
+This simple script will load image files (in PNG and JPG format) and store them in Quake-PAK and Quake-WAD files. The images will automatically be converted to Quake's 8-bit palette (taking fullbright-pixels into account for "glow"-textures) for WAD-output. Full-color versions of the textures are stored in the PAK-file in TGA-format for engines supporting external textures.
+
+A more complete example-script is included in the `examples`-directory.
 
 
 ## Available operations
