@@ -2,13 +2,6 @@
 
 QTexomatic is a tool to combine and convert textures. It's particular focus is on creating textures for Quake, but the resulting textures can be used in other games, too, of course.
 
-## Compiling QTexomatic
-
-QTexomatic is written in Java and should work on any operating systems with a reasonably recent Java execution environment, e.g. Java 11. 
-
-The support for Quake texture formats is provided by [QuakeTextureTool](https://github.com/maikmerten/QuakeTextureTool). If QuakeTextureTool is installed in your local maven repository (`mvn clean install`), then invoking `mvn clean package` in this directory should create an executable `jar`-archive with all necessary dependencies in the `target`-directory .
-
-
 ## Theory of operation
 
 QTexomatic operates by executing a provided script. Basic operations are to load, manipulate and save textures.
@@ -19,6 +12,8 @@ Textures loaded in QTexomatic are referred to by symbolic names. Symbolic names 
 * glow: Parts of the texture that shall glow in the dark (Quake-speak: "fullbright"). These glowing pixels need special treatment.
 
 ### Invoking QTexomatic
+
+QTexomatic is written in Java and should work on any operating systems with a reasonably recent Java execution environment, e.g. Java 11. 
 
 `java -jar QTexomatic-<VERSION>.jar /path/to/script.txt`
 
@@ -75,3 +70,9 @@ Some operations take predefined variables into account. The values of these vari
 | `pakfile` | `set pakfile textures.pak` | Specify the file-name for the output PAK-file. Defaults to "pak0.pak"|
 |`waddither`| `set waddither 0.4` | Specifies the strength of the dithering applied to the image when converting to the 8-bit Quake-palette. Defaults to 0.25.|
 |`wadfile`| `set wadfile textures.wad`| Specify the file-name for the outpu WAD-file. Defaults to "output.wad".|
+
+## Compiling QTexomatic
+
+Unless you want to modify QTexomatic, you won't need to compile QTexomatic yourself. Simply grab a release binary.
+
+The support for Quake texture formats is provided by [QuakeTextureTool](https://github.com/maikmerten/QuakeTextureTool). If QuakeTextureTool is installed in your local maven repository (`mvn clean install`), then invoking `mvn clean package` in this directory should create an executable `jar`-archive with all necessary dependencies in the `target`-directory .
